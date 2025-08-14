@@ -1,0 +1,13 @@
+runs/
+wandb/
+__pycache__/
+custom_datasets/
+cc_deathate_data/
+moco_test/
+tmp/
+wandb/
+cache/
+weights
+experimental
+real_data
+final_test/

@@ -1,0 +1,15 @@
+*/__pycache__
+*/cache
+custom_datasets
+wandb
+runs
+cache
+cc_deathate_data
+custom_datasets
+data_distribution_50
+test_script
+.mypy_cache
+.git
+tmp
+.vscode
+.DS_Store
