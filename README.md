@@ -1,11 +1,12 @@
 # Netlistify
-Netlistify is a deep learning-based framework designed to convert schematic images into HSPICE netlists. We provide an code package for line detection (based on a modified [DETR](https://github.com/facebookresearch/detr) Transformer model), which outputs the precise locations of wire segments within a schematic. Users can combine the wire segment positions extracted by the Transformer model with component locations from YOLO and orientation information from ResNet to reconstruct the netlist. This modular approach ensures accurate schematic interpretation by combining deep learning techniques for different subtasks.
 
-![Example](example.png)
+Netlistify is a modular deep learning framework for converting analog and mixed-signal (AMS) circuit schematics into HSPICE-compatible netlists. It integrates YOLOv8 for component detection, ResNet for orientation classification, and a modified [DETR](https://github.com/facebookresearch/detr) Transformer for precise wire detection and connectivity analysis. With provided preprocessing scripts, synthetic datasets, and pre-trained models, Netlistify enables accurate, end-to-end schematic interpretation and netlist reconstruction out-of-the-box.
+
+![Example](example2.png)
 
 ## Publications
 - Chun-Yen Huang, Hsuan-I Chen, Hao-Wen Ho, Pei-Hsin Kang, Mark Po-Hung Lin, Wen-Hao Liu, Haoxing Ren, “Netlistify: Transforming Circuit Schematics into Netlists with Deep Learning“, ACM/IEEE International Symposium on Machine Learning for CAD (MLCAD), Santa Cruz, CA, September 8–10, 2025
-  
+
 ## Prerequisites
 
 - Python 3.10.14: [Download and install Python 3.10.14] for your operating system.
@@ -41,3 +42,10 @@ Our dataset contains 100,000 schematic images, designed to train and evaluate de
 The dataset used in this project is available on [Hugging Face:Schematic images](https://huggingface.co/datasets/hanky2397/schematic_images).
 
 Note: The dataset is provided in .zip format. Users need to manually download and extract it before use.
+
+## Acknowledgments
+The authors would like to express their sincere gratitude to NVIDIA, Inc., and to the National Science and Technology Council (NSTC) of Taiwan, under Grant No. NSTC 111-2221-E-A49-137-MY3, for their generous support of this research.
+
+## Contact
+
+For technical questions, please contact hank2397@gmail.com or deathate.ai12@nycu.eda.tw.
