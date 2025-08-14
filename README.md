@@ -2,6 +2,10 @@
 Netlistify is a deep learning-based framework designed to convert schematic images into HSPICE netlists. We provide an code package for line detection (based on a modified [DETR](https://github.com/facebookresearch/detr) Transformer model), which outputs the precise locations of wire segments within a schematic. Users can combine the wire segment positions extracted by the Transformer model with component locations from YOLO and orientation information from ResNet to reconstruct the netlist. This modular approach ensures accurate schematic interpretation by combining deep learning techniques for different subtasks.
 
 ![Example](example.png)
+
+## Publications
+- Chun-Yen Huang, Hsuan-I Chen, Hao-Wen Ho, Pei-Hsin Kang, Mark Po-Hung Lin, Wen-Hao Liu, Haoxing Ren, “Netlistify: Transforming Circuit Schematics into Netlists with Deep Learning“, ACM/IEEE International Symposium on Machine Learning for CAD (MLCAD), Santa Cruz, CA, September 8–10, 2025
+  
 ## Prerequisites
 
 - Python 3.10.14: [Download and install Python 3.10.14] for your operating system.
@@ -16,7 +20,7 @@ Netlistify is a deep learning-based framework designed to convert schematic imag
 
 ## Usage
 To run the `main.py` script to train, execute the following command:
-    
+
     python main.py
 
 ## Adjusting Training Parameters
@@ -33,7 +37,7 @@ Open `main_config.py` and set the path to the trained model weights.
 You can follow the function calls in `testing.py` to integrate inference.
 
 ## Dataset
-Our dataset contains 100,000 schematic images, designed to train and evaluate deep learning models for schematic interpretation. 
-The dataset used in this project is available on [Hugging Face:Schematic images](https://huggingface.co/datasets/hanky2397/schematic_images). 
+Our dataset contains 100,000 schematic images, designed to train and evaluate deep learning models for schematic interpretation.
+The dataset used in this project is available on [Hugging Face:Schematic images](https://huggingface.co/datasets/hanky2397/schematic_images).
 
 Note: The dataset is provided in .zip format. Users need to manually download and extract it before use.
