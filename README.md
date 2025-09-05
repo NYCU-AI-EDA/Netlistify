@@ -60,4 +60,4 @@ The authors would like to express their sincere gratitude to NVIDIA, Inc., and t
 
 ## Contact
 
-For technical questions, please contact hank2397@gmail.com or deathate.ai12@nycu.eda.tw.
+For technical questions, please contact hank2397@gmail.com or deathate.ai12@nycu.eda.tw
