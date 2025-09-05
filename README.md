@@ -46,6 +46,18 @@ Note: The dataset is provided in .zip format. Users need to manually download an
 ## Acknowledgments
 The authors would like to express their sincere gratitude to NVIDIA, Inc., and to the National Science and Technology Council (NSTC) of Taiwan, under Grant No. NSTC 111-2221-E-A49-137-MY3, for their generous support of this research.
 
+## Contributors
+| Name | Affiliation | profile |
+|---|---|---|
+| Chun-Yen Huang | NYCU | |
+| Hsuan-I Chen | NYCU | |
+| Hao-Wen Ho | NYCU | |
+| Pei-Hsin Kang | NYCU | |
+| Mark Po-Hung Lin | NYCU | |
+| Wen-Hao Liu | NVIDIA Research | [link](https://research.nvidia.com/person/wen-hao-liu) |
+| Haoyu Yang | NVIDIA Research | [link](https://research.nvidia.com/person/haoyu-yang) |
+| Haoxing Ren | NVIDIA Research | [link](https://research.nvidia.com/person/haoxing-mark-ren) |
+
 ## Contact
 
 For technical questions, please contact hank2397@gmail.com or deathate.ai12@nycu.eda.tw.
