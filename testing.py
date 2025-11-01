@@ -44,20 +44,13 @@ def load_model(
     weight_dir.mkdir(exist_ok=True)
     model_path_dir = Path(model_path).parent
     weight_path = weight_dir / model_path_dir.name
-    if model_path_dir.exists():
-        if weight_path.exists():
-            shutil.rmtree(weight_path)
-        shutil.copytree(model_path_dir, weight_path)
     global model
-    print(weight_path)
+    print("Loading model from:", weight_path / model_path.name)
     if model is None:
-        model = Model(
-            xtransform=xtransform,
-            log2console=False,
-        )
+        model = Model(xtransform=xtransform, log2console=False, amp=False)
         model.fit(
             create_model(),
-            pretrained_path=weight_path / model_path.name,
+            pretrained_path=str(weight_path / model_path.name),
         )
 
 
@@ -131,6 +124,7 @@ def analyze_connection(
     debug,
     debug_img_width,
     debug_cell,
+    output_folder,
 ):
     input_img = input_img.copy()
     draw_img = draw_img.copy()
@@ -158,6 +152,7 @@ def analyze_connection(
                 else img
             ),
             debug_img_width,
+            file_path=output_folder + "connection.jpg",
         )
         return img
 
@@ -304,7 +299,7 @@ def analyze_connection(
                     interval : -interval + slice_size, interval : -interval + slice_size
                 ]
             image_set.append(image)
-        print("model prediction figure")
+        print("generate model prediction figure")
         plot_images(
             create_grid(
                 image_set,
@@ -313,11 +308,12 @@ def analyze_connection(
                 pad_value=127,
             ),
             debug_img_width,
+            file_path=output_folder + "model_prediction.jpg",
         )
         strict_match = False
         # combine lines between grids
         if strict_match:
-            strict_match_threshold=0.15
+            strict_match_threshold = 0.15
             threshold = strict_match_threshold
             for i, j in itertools.product(range(num_row), range(num_column)):
                 if (i, j) not in local_lines:
@@ -399,8 +395,9 @@ def analyze_connection(
             duplicate_threshold=1e-5,
         )
 
-        print("connection figure")
-        draw_connection(image_copy, grid_lines_connection, True, False)
+        print("generate connection figure")
+        with HiddenPrints(disable=False):
+            draw_connection(image_copy, grid_lines_connection, True, False)
         global_connection = []
         for group in grid_lines_connection:
             group = np.array(group) * cropped_slice_size
@@ -412,7 +409,6 @@ def analyze_connection(
         cache = get_local.cache
         attention_map = cache["CustomTransformerEncoderLayer.forward"][-1]  # (144, 196, 196)
         s = []
-        print(len(attention_map))
         for map in attention_map:
             heatmap_data_normalized = cv2.normalize(
                 map, None, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX
@@ -421,37 +417,37 @@ def analyze_connection(
             heatmap_colored = cv2.applyColorMap(heatmap_data_normalized, cv2.COLORMAP_JET)
             s.append(heatmap_colored)
         s = create_grid(s, nrow=num_column, padding=1, pad_value=127)
-        plot_images(s, 600)
+        plot_images(s, 600, file_path=output_folder + "attention_map.jpg")
         return global_connection, draw_img
 
 
-if __name__ == "__main__":
-    path = "test_images/circuit50038.png"
-    path = "real_data/images/000002.jpg"
-    test_list = list(
-        path_like_sort([x.name for x in Path(config.TEST_DATASET_PATH + "/labels").iterdir()])
-    )
-    # test_list = ["000230.jpg"]
-    if config.REAL_DATA:
-        data_config = config.DatasetConfig.REAL
-    else:
-        data_config = config.DatasetConfig.CC
-    img_name = Path(config.TEST_DATASET_PATH + "/images/" + test_list[2])
-    img_name = img_name.with_suffix(".jpg")
-    img = cv2.imread(img_name)
-    label_name = img_name.name.replace(".jpg", ".txt") # load YOLO label for masks
-    img, processed_img = load_test_data(img, label_name, config.TEST_DATASET_PATH, data_config)
+# if __name__ == "__main__":
+#     path = "test_images/circuit50038.png"
+#     path = "real_data/images/000002.jpg"
+#     test_list = list(
+#         path_like_sort([x.name for x in Path(config.TEST_DATASET_PATH + "/labels").iterdir()])
+#     )
+#     # test_list = ["000230.jpg"]
+#     if config.REAL_DATA:
+#         data_config = config.DatasetConfig.REAL
+#     else:
+#         data_config = config.DatasetConfig.CC
+#     img_name = Path(config.TEST_DATASET_PATH + "/images/" + test_list[2])
+#     img_name = img_name.with_suffix(".jpg")
+#     img = cv2.imread(img_name)
+#     label_name = img_name.name.replace(".jpg", ".txt")  # load YOLO label for masks
+#     img, processed_img = load_test_data(img, label_name, config.TEST_DATASET_PATH, data_config)
 
-    plot_images(img, 500)
-    group_connection, result_img = analyze_connection(
-        data_config,
-        processed_img, # images with component masks
-        img, 
-        interval=5, # overlap distance between adjacent cells 
-        local_threshold=0.1, # determine whether the wires should be merged into groups based on the distance threshold in the cell. 
-        global_threshold=0.02, # determine whether the wires should be merged into groups based on the distance threshold between the adjacent cells. 
-        debug=True, # return images with detected wires
-        debug_cell=[-1, -1], # return the wire detection results in the cells you choose
-        debug_img_width=500,
-    )
+#     plot_images(img, 500)
+#     group_connection, result_img = analyze_connection(
+#         data_config,
+#         processed_img,  # images with component masks
+#         img,
+#         interval=5,  # overlap distance between adjacent cells
+#         local_threshold=0.1,  # determine whether the wires should be merged into groups based on the distance threshold in the cell.
+#         global_threshold=0.02,  # determine whether the wires should be merged into groups based on the distance threshold between the adjacent cells.
+#         debug=True,  # return images with detected wires
+#         debug_cell=[-1, -1],  # return the wire detection results in the cells you choose
+#         debug_img_width=500,
+#     )
 # %%

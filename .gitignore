@@ -11,3 +11,4 @@ weights
 experimental
 real_data
 final_test/
+*.pt

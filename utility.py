@@ -57,6 +57,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 import torchvision
 import torchvision.transforms.v2 as transforms
+import wandb
 from einops import rearrange, repeat
 from einops.layers.torch import Rearrange
 from IPython import get_ipython
@@ -81,8 +82,6 @@ from torchmetrics.classification import MulticlassAccuracy
 from torchvision.ops.boxes import complete_box_iou
 from torchvision.utils import make_grid
 from tqdm import tqdm
-
-import wandb
 
 
 # write a context manager to prevent showing matplotlib plots
@@ -166,8 +165,6 @@ class Timer:
 def benchmark(func, times=1000000):
     return timeit.Timer(func).timeit(number=times)
 
-
-@njit
 def norm1(p1, p2):
     x1, y1 = p1
     x2, y2 = p2
@@ -180,7 +177,6 @@ def norm1_s(p1, p2):
     return abs(x1 - x2) + abs(y1 - y2)
 
 
-@njit
 def norm2(a, b):
     x1, y1 = a
     x2, y2 = b
@@ -237,14 +233,14 @@ default_print = print
 print = my_print
 
 
-from pypalettes import get_hex, get_rgb, load_cmap
+from pypalettes import get_hex, load_cmap
 
 
 def color_map(n):
     return color_map.colors[n % len(color_map.colors)]
 
 
-colors = get_rgb(["Acanthurus_olivaceus", "Signac", "Antique"])
+colors = load_cmap(["Acanthurus_olivaceus", "Signac", "Antique"]).rgb
 colors = [
     c
     for i, c in enumerate(colors)
@@ -364,7 +360,9 @@ def flatten_list(lst):
 
 
 @static_vars(disable=False)
-def plot_images(images, img_width=None, max_images=5, parallel=False, parallel_size=5):
+def plot_images(
+    images, img_width=None, max_images=5, parallel=False, parallel_size=5, file_path=None
+):
     if plot_images.disable:
         return
     if isinstance(images, mpl.axes.Axes):
@@ -384,18 +382,22 @@ def plot_images(images, img_width=None, max_images=5, parallel=False, parallel_s
 
     if not is_notebook():
         for image in images:
-            with tempfile.NamedTemporaryFile(suffix=".jpg") as f:
-                if image.max() <= 1:
-                    image = (image * 255).astype(np.uint8)
-                if len(image.shape) == 3 and image.shape[2] == 4:
-                    image = png_to_jpg(image)
-                cv2.imwrite(f.name, image)
-                # os.system(
-                #     f"convert {f.name} -resize {img_width if img_width else 200} -alpha off sixel:-"
-                # )
-                print()
-                os.system(f"img2sixel -w{img_width if img_width else 200} {f.name}")
-                print()
+            if file_path is None:
+                with tempfile.NamedTemporaryFile(suffix=".jpg") as f:
+                    if image.max() <= 1:
+                        image = (image * 255).astype(np.uint8)
+                    if len(image.shape) == 3 and image.shape[2] == 4:
+                        image = png_to_jpg(image)
+                    cv2.imwrite(f.name, image)
+                    # os.system(
+                    #     f"convert {f.name} -resize {img_width if img_width else 200} -alpha off sixel:-"
+                    # )
+                    print()
+                    os.system(f"img2sixel -w{img_width if img_width else 200} {f.name}")
+                    print()
+            else:
+                cv2.imwrite(file_path, image)
+                print(f"Image saved to {file_path}")
         return
 
     cols = len(images) // L

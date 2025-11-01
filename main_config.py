@@ -17,7 +17,7 @@ EVAL = False
 STYLE_OPTIONS = ["encoder, decoder", "cnn"]
 MODEL_STYLE = STYLE_OPTIONS[1]
 REAL_DATA = False #choose dataset, false is the schematic images on https://huggingface.co/datasets/hanky2397/schematic_images.
-SMALL_IMAGE = True # Segment an image into small cells 
+SMALL_IMAGE = True # Segment an image into small cells
 CLASS_OUTPUT = False # Transformer output with class
 UPLOAD = False
 WANDB_KEY = "" # Wandb key
@@ -29,11 +29,11 @@ class DatasetConfig(Enum):
 
 
 def get_best_model_path(config, class_output=False):
-    # choose pt for testing. CC is the dataset on https://huggingface.co/datasets/hanky2397/schematic_images. REAL is teh dataset on your own. 
+    # choose pt for testing. CC is the dataset on https://huggingface.co/datasets/hanky2397/schematic_images. REAL is teh dataset on your own.
     global IMAGE_SIZE, RESULT_NUM, CLASS_OUTPUT
     if config == DatasetConfig.CC:
         RESULT_NUM = 35
-        IMAGE_SIZE = 50 
+        IMAGE_SIZE = 50
         return "runs/FormalDatasetWindowedLinePair/1123_18-10-31/best_train.pth"
     elif config == DatasetConfig.REAL:
         if class_output:
@@ -45,11 +45,8 @@ def get_best_model_path(config, class_output=False):
             CLASS_OUTPUT = False
             RESULT_NUM = 10
             IMAGE_SIZE = 50
-            print(os.getcwd())
-            # input()
-            # return "runs/1118_20-09-56/best_train.pth"
             return "runs/FormalDatasetWindowedLinePair/0113_14-34-52/best_train.pth"
-            
+
     else:
         raise ValueError("Invalid config")
 
