@@ -37,6 +37,17 @@ Open `main_config.py` and set the path to the trained model weights.
 2. Refer to `testing.py` for an example implementation of how to use the trained model for line detection.
 You can follow the function calls in `testing.py` to integrate inference.
 
+## ⭐ Inference Out-of-the-Box (using pretrained model)
+If you want to run inference out-of-the-box without training:
+
+1.	Download the pretrained model from the provided [Pretrained Model](https://drive.google.com/file/d/1Jlx9HNfrTIXrjIOyIL3zyy_rDrcfKKzZ/view?usp=sharing).
+2.	Place the weights into the directory specified in main_config.py.
+3.	Run:
+
+        python inference.py
+
+This will execute the full inference pipeline using the pretrained model.
+
 ## Dataset
 Our dataset contains 100,000 schematic images, designed to train and evaluate deep learning models for schematic interpretation.
 The dataset used in this project is available on [Hugging Face:Schematic images](https://huggingface.co/datasets/hanky2397/schematic_images).

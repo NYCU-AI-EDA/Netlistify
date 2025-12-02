@@ -15,11 +15,10 @@ from utility import *
 config_flag = False
 device_name = "cuda"
 device = torch.device(device_name)
+
 # Load the model
 if config_flag:
-    model_orientation = torch.load(
-        "bubble_orientation/cc_res50_2.pt", weights_only=False, map_location=device_name
-    )
+    raise NotImplementedError("Please train the correponding model from the provided dataset first.")
 else:
     model_orientation = torch.load(
         "bubble_orientation/res50_1.pt", weights_only=False, map_location=device_name
