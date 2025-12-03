@@ -430,7 +430,7 @@ if output_folder.exists():
             item.unlink()
 output_folder.mkdir(exist_ok=True)
 
-for img_path in list(Path(img_dir).iterdir())[0:5]:
+for img_path in list(Path(img_dir).iterdir()):
     img_path = str(img_path)
 
     output_img_dir = output_folder / Path(Path(img_path).stem)
